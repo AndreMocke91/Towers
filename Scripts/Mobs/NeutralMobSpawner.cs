@@ -4,29 +4,30 @@ using System.Collections.Generic;
 
 public class NeutralMobSpawner : MonoBehaviour {
 
-    public GameObject neutralMob;
-    [Range(0,10)]
-    public int numberOfMobs;
+    public GameObject neutralMob;    
 	public int mobXRotation;
-
-    public float spawnWait;
-
-    private List<GameObject> mobs = new List<GameObject>();
+    public float spawnWait;    
 
 	// Use this for initialization
-	void Start () {
-		
-        Vector3 pos = new Vector3(transform.position.x, 0, transform.position.z);
+	void Start () {		
+		SpawnMob ();
+    }
+
+	public void SpawnMob()
+	{
+		//Debug.Log ("Spawning mob for " + this.gameObject.name);
+		Vector3 pos = new Vector3(transform.position.x, 0, transform.position.z);
 		Quaternion rot = Quaternion.Euler(mobXRotation, 0, 0);
 
-        GameObject mob = Instantiate(neutralMob, pos, rot) as GameObject;
-        mob.transform.parent = transform;
+		GameObject mob = Instantiate(neutralMob, pos, rot) as GameObject;
+		mob.transform.parent = transform;
+	}
 
-        mobs.Add(mob);
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public bool HasMob()
+	{
+		if (this.gameObject.GetComponentInChildren<EntityController> () != null) {			
+			return true;
+		}
+		return false;
 	}
 }
