@@ -2,24 +2,27 @@
 using System.Collections;
 
 public class HostileMobMovement : MonoBehaviour {
+	
+    GameObject player;
+    Rigidbody rigidBody;
+	EntityController entityController;
 
-    [Range(0, 5)]
-    public float speed;
-
-    private GameObject player;
-    private Rigidbody rigidBody;
-
-    void Start () {
+	protected void Start () {
         rigidBody = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
+		entityController = gameObject.GetComponent<EntityController> ();
     }
 	
 	
-	void FixedUpdate () {
-        Vector3 vectorToTarget = player.transform.position - transform.position;
-        vectorToTarget.Normalize();
+	protected void FixedUpdate () {
+		if (!entityController.isDead) {
+			Vector3 vectorToTarget = player.transform.position - transform.position;
+			vectorToTarget.Normalize ();
+			rigidBody.MovePosition (transform.position + vectorToTarget * Time.deltaTime * entityController.speed);
+			Utils.RotateModel (gameObject, player, 150);
+		}
+    }
 
-        rigidBody.MovePosition(transform.position + vectorToTarget * Time.deltaTime * speed);
-    }
+
     
 }
